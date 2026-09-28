@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# 
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E5F7CD30-BAF5-4EAD-9399-A3340020DFB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TxnIngest.Core", "src\TxnIngest.Core\TxnIngest.Core.csproj", "{66841E99-FC9C-4A53-B9E8-ED090862887F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0B8E867B-65D5-4489-B771-DD09C23959E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TxnIngest.Core.Tests", "tests\TxnIngest.Core.Tests\TxnIngest.Core.Tests.csproj", "{DC72F40A-EEF9-40B2-A8C4-501175595142}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66841E99-FC9C-4A53-B9E8-ED090862887F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66841E99-FC9C-4A53-B9E8-ED090862887F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66841E99-FC9C-4A53-B9E8-ED090862887F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66841E99-FC9C-4A53-B9E8-ED090862887F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC72F40A-EEF9-40B2-A8C4-501175595142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC72F40A-EEF9-40B2-A8C4-501175595142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC72F40A-EEF9-40B2-A8C4-501175595142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC72F40A-EEF9-40B2-A8C4-501175595142}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{66841E99-FC9C-4A53-B9E8-ED090862887F} = {E5F7CD30-BAF5-4EAD-9399-A3340020DFB7}
+		{DC72F40A-EEF9-40B2-A8C4-501175595142} = {0B8E867B-65D5-4489-B771-DD09C23959E2}
+	EndGlobalSection
+EndGlobal

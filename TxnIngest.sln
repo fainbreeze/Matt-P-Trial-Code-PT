@@ -1,6 +1,35 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # 
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3C1F6B52-8E4A-4D57-A0C2-6F1B2E7D9A01}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		global.json = global.json
+		README.md = README.md
+		TASK.md = TASK.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7A2D4E91-5B3C-4F68-9D1E-2C8B7A6F5E02}"
+	ProjectSection(SolutionItems) = preProject
+		docs\harbour-file-spec.md = docs\harbour-file-spec.md
+		docs\maple-file-spec.md = docs\maple-file-spec.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{B4E8C1D7-2F9A-4B35-8E6C-1D7A3F2B9C03}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "harbour", "harbour", "{C5F9D2E8-3A0B-4C46-9F7D-2E8B4A3C0D04}"
+	ProjectSection(SolutionItems) = preProject
+		samples\harbour\harbour_20260901.csv = samples\harbour\harbour_20260901.csv
+		samples\harbour\harbour_20260902.csv = samples\harbour\harbour_20260902.csv
+		samples\harbour\harbour_bad_header.csv = samples\harbour\harbour_bad_header.csv
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "maple", "maple", "{D6A0E3F9-4B1C-4D57-A08E-3F9C5B4D1E05}"
+	ProjectSection(SolutionItems) = preProject
+		samples\maple\maple_20260901.csv = samples\maple\maple_20260901.csv
+		samples\maple\maple_20260902.csv = samples\maple\maple_20260902.csv
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E5F7CD30-BAF5-4EAD-9399-A3340020DFB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TxnIngest.Core", "src\TxnIngest.Core\TxnIngest.Core.csproj", "{66841E99-FC9C-4A53-B9E8-ED090862887F}"
@@ -37,5 +66,7 @@ Global
 		{66841E99-FC9C-4A53-B9E8-ED090862887F} = {E5F7CD30-BAF5-4EAD-9399-A3340020DFB7}
 		{732A8DBF-0E6E-44C3-8750-BC66920E6DAA} = {E5F7CD30-BAF5-4EAD-9399-A3340020DFB7}
 		{DC72F40A-EEF9-40B2-A8C4-501175595142} = {0B8E867B-65D5-4489-B771-DD09C23959E2}
+		{C5F9D2E8-3A0B-4C46-9F7D-2E8B4A3C0D04} = {B4E8C1D7-2F9A-4B35-8E6C-1D7A3F2B9C03}
+		{D6A0E3F9-4B1C-4D57-A08E-3F9C5B4D1E05} = {B4E8C1D7-2F9A-4B35-8E6C-1D7A3F2B9C03}
 	EndGlobalSection
 EndGlobal

@@ -30,6 +30,7 @@ Acceptance Criteria:
 
 - Time box: Don't spend more than 2 hours.
 - You may use any tools, including AI coding assistants. If you use AI, be prepared to explain every line you submit.
+- Any IDE or command line tool may be used, but if you don't have an IDE setup you can use VS Code with the C# Dev Kit extension.
 - Submit a git repository or a zip with your commit history.
 
 ## What we look at

@@ -1,18 +1,3 @@
-The zip file contains a small C# command line tool that ingests partner transaction files. Your task is to add support for a second partner. All the details are in TASK.md, and README.md covers how to build, test, and run it.
-
-A few things to know: 
-
-    You'll need the .NET 8 SDK, but there are no other external dependencies.
-    Spend no more than 2 hours on it. We don't expect it to be perfect, and your NOTES.md is a good place to say what you'd do with more time.
-    Use whatever tools you normally would, including AI assistants. Just be ready to explain the decisions you made, since you’ll walk through the code in the follow-up session.
-    We're more interested in the decisions you made and process you followed than a perfect result.
-
-Please send your solution back by Monday, October 26 at 5:00 pm PT, either as a zip with your commit history or a link to a git repo. 
-You’ll walk through your solution in a follow-up session with Darryl, our COO, and Jon, our Director of Information Security. Are you available on Wednesday, October 28 at 3:00 pm PT for an hour?
-If you have trouble getting the project to build or run, please let Tyler know and he'll help sort it out.
-
-**********************************************************
-
 First step is to make sure my environment can run it and I understand the basic code.
 
 One of the best places to start is unit tests, since I can get a sense of what we're checking for.
@@ -35,4 +20,3 @@ Comparing the two spec files to understand what's different.
 
     -> already have the sourceSystem enum too, definitely meant to be expanded out this way.
 
-    

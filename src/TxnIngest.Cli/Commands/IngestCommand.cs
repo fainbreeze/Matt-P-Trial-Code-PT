@@ -24,6 +24,7 @@ internal static class IngestCommand
         SourceSystem? source = sourceName.Trim().ToLowerInvariant() switch
         {
             "harbour" => SourceSystem.Harbour,
+            "maple" => SourceSystem.Maple,
             _ => null
         };
 

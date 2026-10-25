@@ -4,5 +4,6 @@ namespace TxnIngest.Core.Domain;
 public enum TransactionType
 {
     Purchase = 1,
-    Refund = 2
+    Refund = 2,
+    Void = 3
 }

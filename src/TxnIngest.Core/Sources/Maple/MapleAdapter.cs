@@ -21,7 +21,7 @@ namespace TxnIngest.Core.Sources.Maple
                 Source = SourceSystem.Maple,
                 ExternalId = ExternalIdFor(row),
                 MerchantId = row.MerchantId,
-                OccurredAtUtc = ReadDateTime(row.TransactionDate + row.TransactionTime),
+                OccurredAtUtc = ReadDateTime(row.TransactionDate + "T" + row.TransactionTime + "Z"),
                 Amount = ReadAmount(row.TransactionAmount),
                 Currency = Currency.CAD, //PLACEHOLDER FOR NOW, NEED TO FIND A WAY TO PULL THE MERCHANT'S CURRENCY.
                 Type = ReadCode(row.TransactionCode)
@@ -37,6 +37,7 @@ namespace TxnIngest.Core.Sources.Maple
         /// Trimmed, because duplicate detection compares identifiers exactly and padding would otherwise let a
         /// resent transaction through as new.
         /// </summary>
+        //public string? ExternalIdFor(MapleRow row) => row.Ref?.Trim();
         public string? ExternalIdFor(MapleRow row) => row.Ref?.Trim();
 
         /// <summary>
@@ -44,9 +45,17 @@ namespace TxnIngest.Core.Sources.Maple
         /// not read becomes null, and <see cref="Transaction.Create"/> then reports the value as missing.
         /// </summary>
         private static DateTime? ReadDateTime(string? text)
-            => DateTimeOffset.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var parsed)
+        {
+            DateTime? time = DateTimeOffset.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var parsed)
                    ? parsed.UtcDateTime
                    : null;
+            
+            //Debug
+            //if (time == null)
+            //    Console.WriteLine($"Failed to parse transaction datetime '{text}' as UTC.");
+
+            return time;
+        }
 
         private static decimal? ReadAmount(string? text)
         => decimal.TryParse(text,

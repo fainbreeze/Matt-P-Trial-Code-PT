@@ -20,6 +20,13 @@ Comparing the two spec files to understand what's different.
 
     -> already have the sourceSystem enum too, definitely meant to be expanded out this way.
 
+THINGS TO KEEP IN MIND FOR MAPLE FROM SPEC:
+    - All amounts are in the merchant's settlement currency.
+        -> Will need to reference something to know if it's CAD or USD; or possibly add some kind of placeholder.
+
+    - Maple may resend a transaction with the same `ref` if it was corrected.
+        -> To me this means that the second / later transaction is the one that actually counts. Should replace the old one.
+
 
 Finally changing the code.
     -> First add that new enum, check where we reference Harbour.
@@ -52,11 +59,21 @@ Finally changing the code.
 
             -> Defaulting to CAD for now for Maple's currency, would need a proper implementation later.
 
+    Running the actual program outside tests:
+        -> Ran it and it looks like harbour has not been broken, but maple isn't quite there yet.
+        -> Currently parsing it as a harbour file, so we need to add some switches.
+        -> Figured it small issue with the map! Fixed how it was reading from the .csv.
 
+    Running into validation errors now such as OccurredAtUtc, looking at it now.
+        -> realized the way I was combining the date and time values was slightly off, remedied.
+        -> the main issue now is when we get a duplicate Id, as it should replace the old one rather than error out.
 
-THINGS TO KEEP IN MIND FOR MAPLE FROM SPEC:
-    - All amounts are in the merchant's settlement currency.
-        -> Will need to reference something to know if it's CAD or USD; or possibly add some kind of placeholder.
+    The second Maple file appears to be reading 100450 twice due to the fact that the default seed has that transaction ID occupied already.
+        -> May lead to more collisions in the future, could potentially be worth adding some kind of safeguard in the future.
 
-    - Maple may resend a transaction with the same `ref` if it was corrected.
-        -> To me this means that the second / later transaction is the one that actually counts. Should replace the old one.
+    First File
+        -> Going over errors to make things right. September 31 stumped me for a moment, but I see why it's erroring now.
+        -> Fixed the error where 500102's replacement wouldn't be read by flipping the order of the list! 
+
+    ************
+    Ran out of time here. Next undoubtedly would have been 

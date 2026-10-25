@@ -6,13 +6,15 @@ using Microsoft.EntityFrameworkCore;
 using TxnIngest.Core.Data;
 using TxnIngest.Core.Domain;
 using TxnIngest.Core.Sources.Harbour;
+using TxnIngest.Core.Sources.Maple;
 
 namespace TxnIngest.Core.Ingestion;
 
 /// <summary>Reads a partner file, validates each row, stores the good ones, and records what happened.</summary>
 public sealed class IngestionService(IngestDbContext db, TimeProvider clock)
 {
-    private readonly HarbourAdapter _adapter = new();
+    private readonly HarbourAdapter _harbourAdapter = new();
+    private readonly MapleAdapter _mapleAdapter = new();
 
     public async Task<FileReceipt> IngestAsync(
         SourceSystem source, Stream content, string fileName, CancellationToken cancellationToken = default)
@@ -37,21 +39,56 @@ public sealed class IngestionService(IngestDbContext db, TimeProvider clock)
             return await FinishAsync(receipt, [], cancellationToken);
         }
 
-        List<HarbourRow> rows;
-        try
+        List<(int Number, TransactionValues Values)> candidates;
+
+        //Consider moving the logic inside these statements to functions.
+        if (source == SourceSystem.Harbour)
         {
-            rows = ReadRows(bytes);
-        }
-        catch (CsvHelperException ex)
-        {
-            receipt.State = FileState.Failed;
-            receipt.FailureReason = FirstLine(ex.Message);
-            return await FinishAsync(receipt, [], cancellationToken);
+            List<HarbourRow> rows;
+            try
+            {
+                rows = ReadHarbourRows(bytes);
+            }
+            catch (CsvHelperException ex)
+            {
+                receipt.State = FileState.Failed;
+                receipt.FailureReason = FirstLine(ex.Message);
+                return await FinishAsync(receipt, [], cancellationToken);
+            }
+
+            candidates = rows
+                .Select((row, index) => (Number: index + 1, Values: _harbourAdapter.ToValues(row)))
+                .ToList();
         }
 
-        var candidates = rows
-            .Select((row, index) => (Number: index + 1, Values: _adapter.ToValues(row)))
-            .ToList();
+        else if (source == SourceSystem.Maple)
+        {
+            List<MapleRow> rows;
+            try
+            {
+                rows = ReadMapleRows(bytes);
+            }
+            catch (CsvHelperException ex)
+            {
+                receipt.State = FileState.Failed;
+                receipt.FailureReason = FirstLine(ex.Message);
+                return await FinishAsync(receipt, [], cancellationToken);
+            }
+
+            //Since Maple can correct rows later, we reverse the order so that the last row is the one that is kept if there are duplicates.
+            candidates = rows
+                .Select((row, index) => (Number: index + 1, Values: _mapleAdapter.ToValues(row)))
+                .Reverse()
+                .ToList();
+        }
+
+        else
+        {
+            //Cannot parse a source we don't support.
+            receipt.State = FileState.Failed;
+            receipt.FailureReason = "Unable to parse unsupported source. Currently only supports Harbour and Maple.";
+            return await FinishAsync(receipt, [], cancellationToken);
+        }
 
         var storedIds = await FindStoredIdsAsync(candidates.Select(c => c.Values.ExternalId), cancellationToken);
         var acceptedIds = new HashSet<string>();
@@ -66,9 +103,12 @@ public sealed class IngestionService(IngestDbContext db, TimeProvider clock)
                 errors.AddRange(created.Error);
 
             var externalId = values.ExternalId;
+            
             if (!string.IsNullOrEmpty(externalId) && (storedIds.Contains(externalId) || acceptedIds.Contains(externalId)))
+            {
                 errors.Add(new ValidationError(TransactionField.ExternalId, ValidationCode.Duplicate,
                     "A transaction with this ID has already been received."));
+            }
 
             if (errors.Count == 0)
             {
@@ -96,13 +136,22 @@ public sealed class IngestionService(IngestDbContext db, TimeProvider clock)
         return await FinishAsync(receipt, results, cancellationToken);
     }
 
-    private static List<HarbourRow> ReadRows(byte[] bytes)
+    private static List<HarbourRow> ReadHarbourRows(byte[] bytes)
     {
         var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true };
         using var reader = new StreamReader(new MemoryStream(bytes));
         using var csv = new CsvReader(reader, config);
         csv.Context.RegisterClassMap<HarbourMap>();
         return csv.GetRecords<HarbourRow>().ToList();
+    }
+
+    private static List<MapleRow> ReadMapleRows(byte[] bytes)
+    {
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true };
+        using var reader = new StreamReader(new MemoryStream(bytes));
+        using var csv = new CsvReader(reader, config);
+        csv.Context.RegisterClassMap<MapleMap>();
+        return csv.GetRecords<MapleRow>().ToList();
     }
 
     private async Task<HashSet<string>> FindStoredIdsAsync(IEnumerable<string?> ids, CancellationToken cancellationToken)

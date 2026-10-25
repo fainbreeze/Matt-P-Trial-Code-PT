@@ -1,3 +1,8 @@
+Hi! In this file I'll essentially be noting my thoughts as I worked through the assignment, with my closing remarks at the end. 
+It may be a little hard to follow, but this is essentially how I take notes while I work daily (though in a little less detail).
+The file may look a little weird on git, but the raw file should look okay.
+
+***************
 First step is to make sure my environment can run it and I understand the basic code.
 
 One of the best places to start is unit tests, since I can get a sense of what we're checking for.
@@ -57,7 +62,7 @@ Finally changing the code.
             -> It might be worth moving some functions such as ReadDateTime into a shared space to save on code duplication, but in the interest of time I won't.
                 -> Both adapters could inherit from some generic shared parent.
 
-            -> Defaulting to CAD for now for Maple's currency, would need a proper implementation later.
+            -> Defaulting to CAD for now for Maple's currency, would need a proper implementation later if it's not a purely CAD company / we have access to the merchants.
 
     Running the actual program outside tests:
         -> Ran it and it looks like harbour has not been broken, but maple isn't quite there yet.
@@ -75,5 +80,21 @@ Finally changing the code.
         -> Going over errors to make things right. September 31 stumped me for a moment, but I see why it's erroring now.
         -> Fixed the error where 500102's replacement wouldn't be read by flipping the order of the list! 
 
-    ************
-    Ran out of time here. Next undoubtedly would have been 
+************
+    Ran out of time here. Next undoubtedly would have been writing unit tests alongside more polish.
+    I would have referenced the existing tests for Harbour and most likely added more to the existing files for Maple specific things such as the unique properties and duplicate handling.
+    There's one or two places I left a commented out Console.WriteLines as well, and while this would obviously not make it to the actual PR I left them in as this is a sort of WIP.
+    I'd also have to contact someone about Maple's time and currency, as I had to assume both UTC and CAD for those fields. (Though I know currency looks at the merchant.)
+
+    There's a few places I definitely could see code duplication being cut down, as the flow between the two providers is so similar.
+    Alongside that, I'd like to have moved a few things to separate functions, as it makes the code look a lot cleaner.
+
+    There's no doubt to me that writing more unit tests surely would have caught one or two bugs but in terms of where the program is at I'm fairly satisfied for the time put in.
+    It seems to handle both the Maple files well and all of the old tests perform as they did before.
+
+    Specific tests I would have written:
+        -> Making sure values for one provider causes the other to error.
+        -> Making sure void transactions are handled correctly.
+        -> Making sure a third provider causes an error.
+        -> Making sure the later entry of the same id is the one that's used for Maple csvs (since it's the correction).
+        -> A suite of tests for each individual property for Maple.
